@@ -39,8 +39,25 @@ body::before {
 @keyframes drift { from { transform:translate(0,0) scale(1); } to { transform:translate(40px,30px) scale(1.1); } }
 
 /* ── CURSOR ── */
-.cursor { position:fixed; width:12px; height:12px; background:var(--accent); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform .1s; mix-blend-mode:screen; }
-.cursor-ring { position:fixed; width:36px; height:36px; border:1.5px solid rgba(0,212,255,.5); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all .25s ease; }
+.cursor {
+  position:fixed; width:12px; height:12px;
+  background:var(--accent); border-radius:50%;
+  pointer-events:none; z-index:9999;
+  left:-200px; top:-200px;
+  transform:translate(-50%,-50%);
+  transition:transform .15s ease;
+  mix-blend-mode:screen;
+  will-change:left,top,transform;
+}
+.cursor-ring {
+  position:fixed; width:36px; height:36px;
+  border:1.5px solid rgba(0,212,255,.5); border-radius:50%;
+  pointer-events:none; z-index:9998;
+  left:-200px; top:-200px;
+  transform:translate(-50%,-50%);
+  transition:transform .25s ease;
+  will-change:left,top,transform;
+}
 
 /* ── SCROLL PROGRESS BAR ── */
 #progress-bar {
@@ -107,7 +124,7 @@ nav {
 
 /* ── HERO ── */
 #hero {
-  position:relative; z-index:1;
+  position:relative; z-index:2;
   min-height:100vh;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   text-align:center;
@@ -162,7 +179,7 @@ h1.hero-title span { color:var(--accent); }
 
 /* ── STAT BAR ── */
 .stat-bar {
-  position:relative; z-index:1;
+  position:relative; z-index:2;
   display:flex; justify-content:center; flex-wrap:wrap; gap:1px;
   border-top:1px solid var(--border); border-bottom:1px solid var(--border);
   background:var(--card);
@@ -181,7 +198,7 @@ h1.hero-title span { color:var(--accent); }
 
 /* ── CONTENT SECTIONS ── */
 section.content-section {
-  position:relative; z-index:1;
+  position:relative; z-index:2;
   max-width:1040px; margin:0 auto;
   padding:100px 32px;
 }
@@ -202,7 +219,7 @@ h2.section-title em { color:var(--accent); font-style:normal; }
 
 /* ── DIVIDER ── */
 .divider {
-  position:relative; z-index:1;
+  position:relative; z-index:2;
   height:1px; background:var(--border);
   max-width:1040px; margin:0 auto;
 }
@@ -309,7 +326,7 @@ blockquote.styled small { color:var(--muted); font-size:.8rem; font-style:normal
 
 /* ── WC BANNER ── */
 .wc-banner {
-  position:relative; z-index:1;
+  position:relative; z-index:2;
   background:linear-gradient(135deg, rgba(0,212,255,.08), rgba(240,192,64,.06));
   border:1px solid var(--border); border-radius:20px;
   max-width:1040px; margin:80px auto 0;
@@ -406,22 +423,34 @@ blockquote.styled small { color:var(--muted); font-size:.8rem; font-style:normal
 
 /* ── FOOTER BANNER ── */
 .footer-banner {
-  position:relative; z-index:1;
-  width:100%; line-height:0;
+  position:relative; z-index:2;
+  display:flex; justify-content:center; align-items:flex-end;
+  padding-bottom:0; line-height:0;
   overflow:hidden;
+  /* subtle glow on the floor */
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,212,255,.03) 100%);
 }
 .footer-banner img {
-  width:100%; display:block;
-  object-fit:cover;
-  max-height:280px;
-  filter:brightness(.75) saturate(1.1);
-  mask-image:linear-gradient(to bottom, rgba(0,0,0,.9) 60%, rgba(0,0,0,0) 100%);
-  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.9) 60%, rgba(0,0,0,0) 100%);
+  /* small square image — show at natural size, max ~180px */
+  width:auto;
+  max-width:180px;
+  height:auto;
+  display:block;
+  object-fit:contain;
+  filter:brightness(.85) saturate(1.1) drop-shadow(0 0 18px rgba(0,212,255,.25));
+  /* fade bottom into footer */
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%);
+  animation: footerFloat 4s ease-in-out infinite;
+}
+@keyframes footerFloat {
+  0%,100% { transform:translateY(0); }
+  50%      { transform:translateY(-6px); }
 }
 
 /* ── FOOTER ── */
 footer {
-  position:relative; z-index:1;
+  position:relative; z-index:2;
   background:var(--deep); border-top:1px solid var(--border);
   text-align:center; padding:40px 24px;
   color:var(--muted); font-size:.9rem;
